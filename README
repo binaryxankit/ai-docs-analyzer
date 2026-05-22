@@ -1,0 +1,37 @@
+# AI Document Analyzer
+
+A command-line AI pipeline that analyzes any technical text 
+and produces a structured intelligent report.
+
+## What It Produces
+
+- Summary — concise 100 word compression
+- Key Concepts — 5 technical concepts extracted as JSON
+- Q&A Pairs — 3 questions that test deep understanding
+- Personalized Explanation — adapts to beginner, 
+  intermediate, or expert level
+- Cost Report — exact token usage and API cost
+
+## Technical Highlights
+
+- Prompt chaining — 4 steps, each builds on the last
+- Dynamic prompts — output adapts to user expertise level
+- Input sanitization — injection defense before any LLM call
+- Token cost tracking — across all pipeline steps
+- Error handling — each step fails independently
+
+## Setup
+
+pip install -r requirements.txt
+
+Add your API key to .env:
+GEMINI_API_KEY=your-key-here
+
+Run:
+python main.py
+
+## Project Structure
+
+utils.py     — LLM caller, cost calculator, sanitizer
+pipeline.py  — 4 step analysis pipeline
+main.py      — entry point
