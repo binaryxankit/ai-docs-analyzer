@@ -1,0 +1,45 @@
+
+# Environment files
+.env
+.env.*
+
+# Sensitive / confidential files and directories
+/confidential/
+/secrets/
+*.key
+*.pem
+*.crt
+credentials.json
+secret-*.json
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Dependencies and packages
+node_modules/
+__pycache__/
+*.egg-info/
+dist/
+build/
+*.pyc
+*.pyo
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# Package manager lock files (optional, uncomment if needed)
+# package-lock.json
+# yarn.lock
+
+# Build and temporary files
+*.log
+.cache/
+.pytest_cache/
+*.tmp
+
