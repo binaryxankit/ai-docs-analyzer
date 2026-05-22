@@ -1,37 +1,51 @@
 # AI Document Analyzer
 
-A command-line AI pipeline that analyzes any technical text 
-and produces a structured intelligent report.
+A small command-line pipeline that analyzes technical text
+and produces a concise, structured report using LLMs.
 
-## What It Produces
+## What it produces
 
-- Summary — concise 100 word compression
-- Key Concepts — 5 technical concepts extracted as JSON
-- Q&A Pairs — 3 questions that test deep understanding
-- Personalized Explanation — adapts to beginner, 
-  intermediate, or expert level
-- Cost Report — exact token usage and API cost
+- **Summary** — concise (≈100 words)
+- **Key Concepts** — 5 technical concepts extracted as JSON
+- **Q&A Pairs** — 3 questions that test deep understanding
+- **Personalized Explanation** — adapts to beginner, intermediate, or expert
+- **Cost Report** — token usage and approximate API cost
 
-## Technical Highlights
+## Technical highlights
 
-- Prompt chaining — 4 steps, each builds on the last
-- Dynamic prompts — output adapts to user expertise level
-- Input sanitization — injection defense before any LLM call
-- Token cost tracking — across all pipeline steps
-- Error handling — each step fails independently
+- Prompt chaining (4 steps)
+- Dynamic prompts adapting to user expertise
+- Input sanitization to reduce injection risk
+- Token-cost tracking across pipeline steps
+- Per-step error handling
 
 ## Setup
 
+Install dependencies:
+
+```bash
 pip install -r requirements.txt
+```
 
-Add your API key to .env:
+Create a `.env` file with your API key:
+
+```env
+# .env
 GEMINI_API_KEY=your-key-here
+```
 
-Run:
+Run the analyzer:
+
+```bash
 python main.py
+```
 
-## Project Structure
+## Project structure
 
-utils.py     — LLM caller, cost calculator, sanitizer
-pipeline.py  — 4 step analysis pipeline
-main.py      — entry point
+- `utils.py` — LLM caller, cost calculator, sanitizer
+- `pipeline.py` — 4-step analysis pipeline
+- `main.py` — CLI entry point
+
+## License
+
+This project is provided as-is. See the repository for license details.
