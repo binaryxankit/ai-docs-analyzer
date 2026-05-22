@@ -1,0 +1,64 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+pip-wheel-metadata/
+
+# Installer logs
+pip-log.txt
+
+# Unit test / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Pyright / mypy
+.mypy_cache/
+
+# Editors
+.vscode/
+.idea/
+
+# System
+.DS_Store
+Thumbs.db
+
+# Environment variables and secrets
+.env
+.env.*
+credentials.json
+secret-*.json
+
+# SSL / keys
+*.key
+*.pem
+*.crt
+
+# Jupyter
+.ipynb_checkpoints
+
+# Caches
+.cache/
+
+# Logs
+*.log
+
+# SQLite
+*.sqlite3
+
+# Node (if present)
+node_modules/
+
+# Optional: keep build artifacts out of repo
+# *.py[cod] already covered above
