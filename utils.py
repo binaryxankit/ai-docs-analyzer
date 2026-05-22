@@ -59,3 +59,18 @@ def input_sanitizer_check(user_content:str) -> bool:
             return False
     return True
 
+def cost_calculator(input_tokens:int = 0, output_tokens:int = 0) -> float:
+    # calculate the cost of the request
+        # Calculate the cost of the request using model pricing per 1M tokens.
+        # Defaults set to Gemini 3.5 Flash: input $1.50 per 1M, output $9 per 1M.
+        # Rates can be overridden with environment variables:
+        #   INPUT_RATE_PER_1M and OUTPUT_RATE_PER_1M
+        input_rate_per_1m = float(os.getenv("INPUT_RATE_PER_1M", "1.5"))
+        output_rate_per_1m = float(os.getenv("OUTPUT_RATE_PER_1M", "9"))
+
+        # convert per-1M rates to per-token rates
+        per_token_input = input_rate_per_1m / 1_000_000.0
+        per_token_output = output_rate_per_1m / 1_000_000.0
+
+        total = input_tokens * per_token_input + output_tokens * per_token_output
+        return round(total, 8)
