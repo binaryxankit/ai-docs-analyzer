@@ -92,7 +92,24 @@ def document_analyzer(user_content, user_level):
         input_tokens += qna_pairs['input_tokens']
         output_tokens += qna_pairs['output_tokens']
         report['qna_pairs'] = qna_pairs_obj
-        
+        # Step 4  →  Give a personalized explanation adapted to user level - beginner / intermediate / expert
+
+        level_instructions = {
+            "beginner": "Use simple language. Avoid jargon. Always explain technical terms. Use analogies.",
+            "intermediate": "Use standard technical language. Brief explanations when needed.",
+            "expert": "Use precise technical language. Skip basic explanations. Be concise."
+        }
+
+        system_instruction = f"""You are a senior software engineer adaptive mentor with 20 years of experience in different domains most of the time in AI engineering. You have to provide a personalized explanation of the user content based on their level. user content is {user_content} and the summary is {summary} and key concepts are {key_concepts}. User level is {user_level}.
+        You have to return the personalized explanation based on this instruction: {level_instructions[user_level]}. Make sure the explanation would be under 100 words.
+        """
+        explanation = run_llm(user_content, system_instruction)
+        input_tokens += explanation['input_tokens']
+        output_tokens += explanation['output_tokens']
+        total_cost = cost_calculator(input_tokens, output_tokens)
+        report['explanation'] = explanation['text']
+        report['total_cost'] = total_cost
+
         return report
 
     except Exception as e:
