@@ -67,6 +67,31 @@ def document_analyzer(user_content, user_level):
         input_tokens += key_concepts['input_tokens']
         output_tokens += key_concepts['output_tokens']
         report['key_concepts'] = key_concepts_obj
+        # Step 3  →  Generate 3 Q&A pairs that test understanding — return as JSON
+        system_instruction = f"""You are a senior software engineer mentor with 20 years of experience in different domains most of the time in AI engineering. You have to generate 3 Q&A pairs that test understanding of the user content. user content is {user_content} and the summary is {summary} and key concepts are {key_concepts}. You have to return the output in a JSON format. final output should be in this: 
+        {{
+            'qna_pairs': [
+                {{
+                    'question': 'question1',
+                    'answer': 'answer of question1'
+                }},
+                ...
+            ]
+        }}
+        """
+
+        qna_pairs = run_llm(user_content, system_instruction)
+        raw_qna = qna_pairs.get('text') if isinstance(qna_pairs, dict) else qna_pairs
+        cleaned_qna = _extract_json(raw_qna)
+        try:
+            qna_pairs_obj = json.loads(cleaned_qna)
+        except Exception:
+            print('Failed to parse qna_pairs JSON. Raw output:')
+            print(raw_qna)
+            raise
+        input_tokens += qna_pairs['input_tokens']
+        output_tokens += qna_pairs['output_tokens']
+        report['qna_pairs'] = qna_pairs_obj
         
         return report
 
