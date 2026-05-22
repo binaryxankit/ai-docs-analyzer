@@ -19,6 +19,55 @@ def document_analyzer(user_content, user_level):
         output_tokens += summary['output_tokens']
         report['summary'] = summary['text']
 
+        # Step 2 →  Extract the key entities and concepts from the text
+        system_instruction = f"""You are a senior software engineer with 20 years of experience in different domains most of the time in AI engineering. You have to extract the 5 key concepts, you have summarized user content {summary} and the original content is {user_content}. You have to extract the key concepts and entities from the user content. You have to return the output in a list format. final output should be in this: 
+        {{
+            'key_concepts': [
+                {{
+                    'concept': 'concept1',
+                    'description': 'what and why it is important in 30 words'
+                }},
+                ...
+            ],
+            'complexity': 'concept complexity - normal, intermediate, complex'
+        }}
+        
+        description should be in 30 words, complexity depends on how complex the concept of key concept is.
+        """
+
+        key_concepts = run_llm(user_content, system_instruction)
+        # Robustly parse JSON from model output: strip markdown fences and extract JSON substring
+        def _extract_json(s: str) -> str:
+            if not s or not s.strip():
+                return s
+            text = s.strip()
+            # remove triple-backtick fences
+            if text.startswith('```') and text.endswith('```'):
+                # drop the first/last fence lines
+                parts = text.split('\n')
+                # if fence includes language, remove first line
+                parts = parts[1:-1]
+                text = '\n'.join(parts).strip()
+            # If the model included a markdown JSON block like ```json ... ``` handle above
+            # Try to find a JSON object inside the text by locating outermost braces
+            first = text.find('{')
+            last = text.rfind('}')
+            if first != -1 and last != -1 and last > first:
+                return text[first:last+1]
+            return text
+
+        raw = key_concepts.get('text') if isinstance(key_concepts, dict) else key_concepts
+        cleaned = _extract_json(raw)
+        try:
+            key_concepts_obj = json.loads(cleaned)
+        except Exception:
+            print('Failed to parse key_concepts JSON. Raw output:')
+            print(raw)
+            raise
+        input_tokens += key_concepts['input_tokens']
+        output_tokens += key_concepts['output_tokens']
+        report['key_concepts'] = key_concepts_obj
+        
         return report
 
     except Exception as e:
